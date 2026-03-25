@@ -3,7 +3,12 @@
   publish = "dist"
 
 [[redirects]]
+  from = "/google*.html"
+  to = "/google*.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  
