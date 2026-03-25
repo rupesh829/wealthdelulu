@@ -6,16 +6,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-```
-
-✅ Your folder now has everything needed. It should look like this:
-```
-wealthdelulu-site/
-  ├── index.html
-  ├── package.json
-  ├── vite.config.js
-  ├── netlify.toml
-  └── src/
-       ├── App.jsx
-       └── main.jsx
+  
