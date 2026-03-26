@@ -536,6 +536,72 @@ function ArticlesPage() {
   );
 }
 
+// ─── Budget Input — local state so typing never loses focus ──────────────────
+function BudgetInput({ value, onChange, color }) {
+  const [local, setLocal] = useState(String(value));
+
+  // Sync if parent value changes from outside (e.g. reset)
+  useState(() => { setLocal(String(value)); }, [value]);
+
+  const commit = (val) => {
+    const n = Number(val);
+    if (!isNaN(n) && n >= 0) onChange(n);
+  };
+
+  return (
+    <input
+      style={{ ...S.inp, width:85, padding:"5px 10px", fontSize:13 }}
+      type="number"
+      min={0}
+      value={local}
+      onChange={e => setLocal(e.target.value)}
+      onBlur={e => commit(e.target.value)}
+      onKeyDown={e => { if (e.key === "Enter") { commit(e.target.value); e.target.blur(); } }}
+    />
+  );
+}
+
+// ─── Budget Section — defined OUTSIDE BudgetPage so it never remounts ────────
+function BudgetSection({ title, col, items, vals, setVals, total: tot, ideal, income }) {
+  return (
+    <div style={{ ...S.budgetSection, borderColor: col+"44" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+        <div>
+          <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:18, color:col, margin:0 }}>{title}</h3>
+          <span style={{ fontSize:11, color:"var(--muted)" }}>ideal ~{ideal}% of income</span>
+        </div>
+        <div style={{ textAlign:"right" }}>
+          <div style={{ fontFamily:"'Bebas Neue'", fontSize:26, color:col }}>{fmt(tot)}</div>
+          <div style={{ fontSize:11, color:"var(--muted)" }}>{pct(tot, income)}%</div>
+        </div>
+      </div>
+      <div style={{ height:4, borderRadius:2, background:"#222", marginBottom:20, position:"relative" }}>
+        <div style={{ height:"100%", borderRadius:2, background:col, width:`${Math.min(100, pct(tot, income))}%`, transition:"width 0.4s" }} />
+        <div style={{ position:"absolute", top:-4, left:`${ideal}%`, width:2, height:12, background:"rgba(255,255,255,0.2)", borderRadius:1 }} />
+      </div>
+      <div style={S.budgetGrid}>
+        {items.map(item => (
+          <div key={item.key} style={S.budgetItem}>
+            <span style={{ fontSize:13, color:"var(--white)", display:"flex", alignItems:"center", gap:6 }}>
+              {item.emoji} {item.label}
+            </span>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ fontFamily:"'Bebas Neue'", fontSize:15, color:col, minWidth:55, textAlign:"right" }}>
+                {fmt(vals[item.key])}
+              </span>
+              <BudgetInput
+                value={vals[item.key]}
+                color={col}
+                onChange={n => setVals(v => ({ ...v, [item.key]: n }))}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Budget Calculator ─────────────────────────────────────────────────────────
 const NEEDS = [
   { key:"rent",      label:"Rent / Mortgage",    default:1200, emoji:"🏠" },
@@ -583,39 +649,6 @@ function BudgetPage() {
   const tN = sumObj(needs), tW = sumObj(wants), tS = sumObj(savgs);
   const total = tN+tW+tS, rem = income-total;
 
-  const Section = ({ title, col, items, vals, setVals, total: tot, ideal }) => (
-    <div style={{ ...S.budgetSection, borderColor: col+"44" }}>
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
-        <div>
-          <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:18, color:col, margin:0 }}>{title}</h3>
-          <span style={{ fontSize:11, color:"var(--muted)" }}>ideal ~{ideal}% of income</span>
-        </div>
-        <div style={{ textAlign:"right" }}>
-          <div style={{ fontFamily:"'Bebas Neue'", fontSize:26, color:col }}>{fmt(tot)}</div>
-          <div style={{ fontSize:11, color:"var(--muted)" }}>{pct(tot,income)}%</div>
-        </div>
-      </div>
-      <div style={{ height:4, borderRadius:2, background:"#222", marginBottom:20, position:"relative" }}>
-        <div style={{ height:"100%", borderRadius:2, background:col, width:`${Math.min(100,pct(tot,income))}%`, transition:"width 0.4s" }} />
-        <div style={{ position:"absolute", top:-4, left:`${ideal}%`, width:2, height:12, background:"rgba(255,255,255,0.2)", borderRadius:1 }} />
-      </div>
-      <div style={S.budgetGrid}>
-        {items.map(item => (
-          <div key={item.key} style={S.budgetItem}>
-            <span style={{ fontSize:13, color:"var(--white)", display:"flex", alignItems:"center", gap:6 }}>
-              {item.emoji} {item.label}
-            </span>
-            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-              <span style={{ fontFamily:"'Bebas Neue'", fontSize:15, color:col, minWidth:55, textAlign:"right" }}>{fmt(vals[item.key])}</span>
-              <input style={{ ...S.inp, width:85, padding:"5px 10px", fontSize:13 }} type="number" min={0}
-                value={vals[item.key]} onChange={e => setVals(v => ({ ...v, [item.key]: Number(e.target.value) }))} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div style={S.page}>
       <div style={S.sectionTag} className="fade-up">50/30/20 Budget Calculator</div>
@@ -648,9 +681,9 @@ function BudgetPage() {
         ))}
       </div>
 
-      <Section title="🏠 Needs"         col="var(--pink)"   items={NEEDS}   vals={needs} setVals={setNeeds} total={tN} ideal={50} />
-      <Section title="✨ Wants"         col="var(--yellow)" items={WANTS}   vals={wants} setVals={setWants} total={tW} ideal={30} />
-      <Section title="💰 Savings & Debt" col="var(--lime)"  items={SAVINGS} vals={savgs} setVals={setSavgs} total={tS} ideal={20} />
+      <BudgetSection title="🏠 Needs"          col="var(--pink)"   items={NEEDS}   vals={needs} setVals={setNeeds} total={tN} ideal={50} income={income} />
+      <BudgetSection title="✨ Wants"          col="var(--yellow)" items={WANTS}   vals={wants} setVals={setWants} total={tW} ideal={30} income={income} />
+      <BudgetSection title="💰 Savings & Debt" col="var(--lime)"   items={SAVINGS} vals={savgs} setVals={setSavgs} total={tS} ideal={20} income={income} />
     </div>
   );
 }
