@@ -337,6 +337,7 @@ function Nav({ user, active, setActive, onLogout, onOpenAuth }) {
     { id:"budget",    label:"Budget",      icon:"◈" },
     { id:"calcs",     label:"Calculators", icon:"∑" },
     { id:"networth",  label:"Net Worth",   icon:"◉" },
+    { id:"contact",   label:"Contact",     icon:"✉" },
   ];
   return (
     <nav style={S.nav}>
@@ -536,23 +537,31 @@ function ArticlesPage() {
   );
 }
 
-// ─── Budget Input — local state so typing never loses focus ──────────────────
-function BudgetInput({ value, onChange, color }) {
+// ─── NumInput — universal number input with local state ───────────────────────
+// Keeps focus while typing. Only commits to parent on blur or Enter.
+// Used on every number input across the entire app.
+function NumInput({ value, onChange, style = {}, step, min = 0 }) {
   const [local, setLocal] = useState(String(value));
 
-  // Sync if parent value changes from outside (e.g. reset)
-  useState(() => { setLocal(String(value)); }, [value]);
+  // Sync from parent only when value changes externally (e.g. slider moves income)
+  const prevRef = useState(value);
+  if (prevRef[0] !== value && local === String(prevRef[0])) {
+    setLocal(String(value));
+  }
+  prevRef[0] = value;
 
-  const commit = (val) => {
-    const n = Number(val);
-    if (!isNaN(n) && n >= 0) onChange(n);
+  const commit = (raw) => {
+    const n = parseFloat(raw);
+    if (!isNaN(n) && n >= (min ?? 0)) onChange(n);
+    else setLocal(String(value)); // reset to last valid if bad input
   };
 
   return (
     <input
-      style={{ ...S.inp, width:85, padding:"5px 10px", fontSize:13 }}
+      style={{ ...S.inp, ...style }}
       type="number"
-      min={0}
+      min={min}
+      step={step}
       value={local}
       onChange={e => setLocal(e.target.value)}
       onBlur={e => commit(e.target.value)}
@@ -589,9 +598,9 @@ function BudgetSection({ title, col, items, vals, setVals, total: tot, ideal, in
               <span style={{ fontFamily:"'Bebas Neue'", fontSize:15, color:col, minWidth:55, textAlign:"right" }}>
                 {fmt(vals[item.key])}
               </span>
-              <BudgetInput
+              <NumInput
                 value={vals[item.key]}
-                color={col}
+                style={{ width:85, padding:"5px 10px", fontSize:13 }}
                 onChange={n => setVals(v => ({ ...v, [item.key]: n }))}
               />
             </div>
@@ -661,8 +670,11 @@ function BudgetPage() {
             <input type="range" min={500} max={20000} step={100} value={income} onChange={e => setIncome(Number(e.target.value))} />
             <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"var(--muted)", marginTop:4 }}><span>$500</span><span>$20,000</span></div>
           </div>
-          <input style={{ ...S.inp, width:120, fontFamily:"'Bebas Neue'", fontSize:22, color:"var(--lime)", textAlign:"center" }}
-            type="number" value={income} onChange={e => setIncome(Number(e.target.value))} />
+          <NumInput
+            style={{ width:120, fontFamily:"'Bebas Neue'", fontSize:22, color:"var(--lime)", textAlign:"center" }}
+            value={income}
+            onChange={n => setIncome(n)}
+          />
         </div>
       </div>
 
@@ -761,10 +773,10 @@ function CompoundCalc() {
     <CalcGrid>
       <div>
         <h3 style={S.calcH}>Compound Interest</h3>
-        <F label="Initial Investment"><input style={S.inp} type="number" value={p} onChange={e=>setP(+e.target.value)}/></F>
-        <F label="Annual Rate (%)"><input style={S.inp} type="number" step={0.1} value={r} onChange={e=>setR(+e.target.value)}/></F>
-        <F label="Years"><input style={S.inp} type="number" value={y} onChange={e=>setY(+e.target.value)}/></F>
-        <F label="Monthly Contribution"><input style={S.inp} type="number" value={c} onChange={e=>setC(+e.target.value)}/></F>
+        <F label="Initial Investment"><NumInput value={p} onChange={setP}/></F>
+        <F label="Annual Rate (%)"><NumInput value={r} onChange={setR} step={0.1}/></F>
+        <F label="Years"><NumInput value={y} onChange={setY}/></F>
+        <F label="Monthly Contribution"><NumInput value={c} onChange={setC}/></F>
         <F label="Compounding">
           <select style={S.inp} value={f} onChange={e=>setF(+e.target.value)}>
             <option value={1}>Annually</option><option value={4}>Quarterly</option>
@@ -798,9 +810,9 @@ function LoanCalc() {
     <CalcGrid>
       <div>
         <h3 style={S.calcH}>Loan / Mortgage</h3>
-        <F label="Loan Amount"><input style={S.inp} type="number" value={loan} onChange={e=>setLoan(+e.target.value)}/></F>
-        <F label="Down Payment"><input style={S.inp} type="number" value={down} onChange={e=>setDown(+e.target.value)}/></F>
-        <F label="Interest Rate (%)"><input style={S.inp} type="number" step={0.1} value={rate} onChange={e=>setRate(+e.target.value)}/></F>
+        <F label="Loan Amount"><NumInput value={loan} onChange={setLoan}/></F>
+        <F label="Down Payment"><NumInput value={down} onChange={setDown}/></F>
+        <F label="Interest Rate (%)"><NumInput value={rate} onChange={setRate} step={0.1}/></F>
         <F label="Loan Term">
           <select style={S.inp} value={term} onChange={e=>setTerm(+e.target.value)}>
             {[5,10,15,20,25,30].map(y=><option key={y} value={y}>{y} years</option>)}
@@ -835,10 +847,10 @@ function SavingsCalc() {
     <CalcGrid>
       <div>
         <h3 style={S.calcH}>Savings Goal</h3>
-        <F label="Savings Goal"><input style={S.inp} type="number" value={goal} onChange={e=>setGoal(+e.target.value)}/></F>
-        <F label="Already Saved"><input style={S.inp} type="number" value={saved} onChange={e=>setSaved(+e.target.value)}/></F>
-        <F label="Monthly Contribution"><input style={S.inp} type="number" value={mo} onChange={e=>setMo(+e.target.value)}/></F>
-        <F label="Expected Return (%)"><input style={S.inp} type="number" step={0.1} value={rate} onChange={e=>setRate(+e.target.value)}/></F>
+        <F label="Savings Goal"><NumInput value={goal} onChange={setGoal}/></F>
+        <F label="Already Saved"><NumInput value={saved} onChange={setSaved}/></F>
+        <F label="Monthly Contribution"><NumInput value={mo} onChange={setMo}/></F>
+        <F label="Expected Return (%)"><NumInput value={rate} onChange={setRate} step={0.1}/></F>
       </div>
       <div>
         <h3 style={S.calcH}>Results</h3>
@@ -872,14 +884,14 @@ function EmergencyCalc() {
     <CalcGrid>
       <div>
         <h3 style={S.calcH}>Emergency Fund</h3>
-        <F label="Monthly Expenses"><input style={S.inp} type="number" value={exp} onChange={e=>setExp(+e.target.value)}/></F>
+        <F label="Monthly Expenses"><NumInput value={exp} onChange={setExp}/></F>
         <F label="Months of Coverage">
           <select style={S.inp} value={mos} onChange={e=>setMos(+e.target.value)}>
             {[3,4,5,6,9,12].map(m=><option key={m} value={m}>{m} months</option>)}
           </select>
         </F>
-        <F label="Currently Saved"><input style={S.inp} type="number" value={have} onChange={e=>setHave(+e.target.value)}/></F>
-        <F label="Monthly Contribution"><input style={S.inp} type="number" value={add} onChange={e=>setAdd(+e.target.value)}/></F>
+        <F label="Currently Saved"><NumInput value={have} onChange={setHave}/></F>
+        <F label="Monthly Contribution"><NumInput value={add} onChange={setAdd}/></F>
       </div>
       <div>
         <h3 style={S.calcH}>Results</h3>
@@ -913,12 +925,12 @@ function RetireCalc() {
     <CalcGrid>
       <div>
         <h3 style={S.calcH}>Retirement Planner</h3>
-        <F label="Current Age"><input style={S.inp} type="number" value={age} onChange={e=>setAge(+e.target.value)}/></F>
-        <F label="Retirement Age"><input style={S.inp} type="number" value={ret} onChange={e=>setRet(+e.target.value)}/></F>
-        <F label="Current Savings"><input style={S.inp} type="number" value={saved} onChange={e=>setSaved(+e.target.value)}/></F>
-        <F label="Monthly Contribution"><input style={S.inp} type="number" value={mo} onChange={e=>setMo(+e.target.value)}/></F>
-        <F label="Expected Return (%)"><input style={S.inp} type="number" step={0.1} value={rate} onChange={e=>setRate(+e.target.value)}/></F>
-        <F label="Withdrawal Rate (%)"><input style={S.inp} type="number" step={0.1} value={wd} onChange={e=>setWd(+e.target.value)}/></F>
+        <F label="Current Age"><NumInput value={age} onChange={setAge}/></F>
+        <F label="Retirement Age"><NumInput value={ret} onChange={setRet}/></F>
+        <F label="Current Savings"><NumInput value={saved} onChange={setSaved}/></F>
+        <F label="Monthly Contribution"><NumInput value={mo} onChange={setMo}/></F>
+        <F label="Expected Return (%)"><NumInput value={rate} onChange={setRate} step={0.1}/></F>
+        <F label="Withdrawal Rate (%)"><NumInput value={wd} onChange={setWd} step={0.1}/></F>
       </div>
       <div>
         <h3 style={S.calcH}>At Retirement</h3>
@@ -930,6 +942,28 @@ function RetireCalc() {
         <div style={S.insight}>🏦 The 4% rule suggests your portfolio can sustain withdrawals for 30+ years.</div>
       </div>
     </CalcGrid>
+  );
+}
+
+// ─── NW Section — defined OUTSIDE NetWorthPage so inputs never remount ───────
+function NWSection({ title, color, defs, vals, setVals, total }) {
+  return (
+    <div style={{ ...S.budgetSection, borderColor: color+"44", flex:1 }}>
+      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:16 }}>
+        <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:18, color, margin:0 }}>{title}</h3>
+        <span style={{ fontFamily:"'Bebas Neue'", fontSize:26, color }}>{fmt(total)}</span>
+      </div>
+      {defs.map(d => (
+        <div key={d.k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+          <label style={{ fontSize:13, color:"var(--white)", display:"flex", gap:6 }}>{d.e} {d.l}</label>
+          <NumInput
+            value={vals[d.k]}
+            style={{ width:110, fontSize:13, padding:"5px 10px" }}
+            onChange={n => setVals(v => ({ ...v, [d.k]: n }))}
+          />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -966,22 +1000,6 @@ function NetWorthPage() {
     :nw<1000000?"Thriving — real wealth is happening"
     :"Wealthy — now sustain and grow 👑";
 
-  const NWSection = ({ title, color, defs, vals, setVals, total }) => (
-    <div style={{ ...S.budgetSection, borderColor: color+"44", flex:1 }}>
-      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:16 }}>
-        <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:18, color, margin:0 }}>{title}</h3>
-        <span style={{ fontFamily:"'Bebas Neue'", fontSize:26, color }}>{fmt(total)}</span>
-      </div>
-      {defs.map(d => (
-        <div key={d.k} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-          <label style={{ fontSize:13, color:"var(--white)", display:"flex", gap:6 }}>{d.e} {d.l}</label>
-          <input style={{ ...S.inp, width:110, fontSize:13, padding:"5px 10px" }} type="number"
-            value={vals[d.k]} onChange={e => setVals(v => ({ ...v, [d.k]:+e.target.value }))} />
-        </div>
-      ))}
-    </div>
-  );
-
   return (
     <div style={S.page}>
       <div style={S.sectionTag} className="fade-up">net worth calculator</div>
@@ -1004,6 +1022,165 @@ function NetWorthPage() {
       <div className="fade-up4" style={{ display:"flex", gap:24, flexWrap:"wrap" }}>
         <NWSection title="✦ Assets"      color="var(--lime)" defs={aDefs} vals={assets} setVals={setAssets} total={tA} />
         <NWSection title="▼ Liabilities" color="var(--pink)" defs={lDefs} vals={liabs}  setVals={setLiabs}  total={tL} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Contact / Feedback Page ───────────────────────────────────────────────────
+function ContactPage() {
+  const [form, setForm]       = useState({ name:"", email:"", category:"bug", message:"" });
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors]   = useState({});
+
+  const categories = [
+    { val:"bug",        label:"🐛  Found a bug" },
+    { val:"suggestion", label:"💡  Feature suggestion" },
+    { val:"content",    label:"📝  Article feedback" },
+    { val:"calculator", label:"🧮  Calculator issue" },
+    { val:"other",      label:"💬  General question" },
+  ];
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim())                             e.name    = "Name is required";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Valid email required";
+    if (!form.message.trim() || form.message.length < 20) e.message = "Please write at least 20 characters";
+    return e;
+  };
+
+  const handleSubmit = () => {
+    const e = validate();
+    if (Object.keys(e).length) { setErrors(e); return; }
+    // Opens default email client with pre-filled details — no backend needed
+    const subject = encodeURIComponent(`[WealthDelulu] ${categories.find(c=>c.val===form.category)?.label}`);
+    const body    = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nCategory: ${form.category}\n\nMessage:\n${form.message}`);
+    window.open(`mailto:wealthdelulu@gmail.com?subject=${subject}&body=${body}`);
+    setSubmitted(true);
+  };
+
+  const Field = ({ id, label, error, children }) => (
+    <div style={{ marginBottom:20 }}>
+      <label style={{ ...S.lbl, marginBottom:8 }}>{label}</label>
+      {children}
+      {error && <p style={{ fontSize:12, color:"var(--pink)", marginTop:5 }}>{error}</p>}
+    </div>
+  );
+
+  if (submitted) return (
+    <div style={S.page}>
+      <div style={{ maxWidth:560, margin:"80px auto", textAlign:"center" }}>
+        <div style={{ fontSize:64, marginBottom:24 }}>💸</div>
+        <h1 style={{ fontFamily:"'Bebas Neue'", fontSize:52, color:"var(--white)", marginBottom:12 }}>
+          Message Sent!
+        </h1>
+        <p style={{ fontSize:16, color:"var(--muted)", lineHeight:1.7, marginBottom:32 }}>
+          Thanks for reaching out. Your email client should have opened with a pre-filled message. If it didn't, email us directly at{" "}
+          <a href="mailto:wealthdelulu@gmail.com" style={{ color:"var(--yellow)" }}>wealthdelulu@gmail.com</a>
+        </p>
+        <button style={{ ...S.pinkBtn, width:"auto", padding:"12px 32px" }}
+          onClick={() => { setSubmitted(false); setForm({ name:"", email:"", category:"bug", message:"" }); }}>
+          Send another message
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={S.page}>
+      <div className="fade-up" style={S.sectionTag}>get in touch</div>
+      <h1 className="fade-up2" style={S.pageTitle}>
+        Found a Bug?<br /><span style={{color:"var(--yellow)"}}>Got a Thought?</span>
+      </h1>
+      <p className="fade-up3" style={{ ...S.pageSub, marginBottom:40 }}>
+        We read every message. Bug reports, feature ideas, article feedback — it all helps make WealthDelulu better.
+      </p>
+
+      <div className="fade-up4" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:32, alignItems:"start" }}>
+
+        {/* ── Form ── */}
+        <div style={S.card}>
+          <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:18, color:"var(--white)", marginBottom:24 }}>
+            Send us a message
+          </h3>
+
+          <Field label="Your Name" error={errors.name}>
+            <input style={S.inp} type="text" placeholder="Jane Smith"
+              value={form.name}
+              onChange={e => { setForm(f=>({...f, name:e.target.value})); setErrors(er=>({...er,name:""})); }} />
+          </Field>
+
+          <Field label="Your Email" error={errors.email}>
+            <input style={S.inp} type="email" placeholder="jane@example.com"
+              value={form.email}
+              onChange={e => { setForm(f=>({...f, email:e.target.value})); setErrors(er=>({...er,email:""})); }} />
+          </Field>
+
+          <Field label="Category" error={errors.category}>
+            <select style={S.inp} value={form.category}
+              onChange={e => setForm(f=>({...f, category:e.target.value}))}>
+              {categories.map(c => <option key={c.val} value={c.val}>{c.label}</option>)}
+            </select>
+          </Field>
+
+          <Field label="Message" error={errors.message}>
+            <textarea
+              style={{ ...S.inp, minHeight:140, resize:"vertical", lineHeight:1.6 }}
+              placeholder="Tell us what's on your mind — the more detail the better..."
+              value={form.message}
+              onChange={e => { setForm(f=>({...f, message:e.target.value})); setErrors(er=>({...er,message:""})); }}
+            />
+          </Field>
+
+          <button style={S.pinkBtn} onClick={handleSubmit}>
+            Send Message →
+          </button>
+          <p style={{ fontSize:11, color:"var(--muted)", marginTop:12, textAlign:"center" }}>
+            This opens your email client with a pre-filled message. No data is stored on our servers.
+          </p>
+        </div>
+
+        {/* ── Info Panel ── */}
+        <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+
+          <div style={{ ...S.card, borderColor:"rgba(232,201,122,0.25)" }}>
+            <div style={{ fontSize:24, marginBottom:10 }}>📧</div>
+            <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:16, color:"var(--white)", marginBottom:6 }}>Email us directly</h3>
+            <a href="mailto:wealthdelulu@gmail.com"
+              style={{ fontSize:14, color:"var(--yellow)", wordBreak:"break-all" }}>
+              wealthdelulu@gmail.com
+            </a>
+          </div>
+
+          <div style={{ ...S.card, borderColor:"rgba(168,197,160,0.25)" }}>
+            <div style={{ fontSize:24, marginBottom:10 }}>⏱️</div>
+            <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:16, color:"var(--white)", marginBottom:6 }}>Response time</h3>
+            <p style={{ fontSize:14, color:"var(--muted)", lineHeight:1.6 }}>
+              We typically respond within 24–48 hours. Complex bug reports may take a little longer.
+            </p>
+          </div>
+
+          <div style={{ ...S.card, borderColor:"rgba(143,184,200,0.25)" }}>
+            <div style={{ fontSize:24, marginBottom:10 }}>💡</div>
+            <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:16, color:"var(--white)", marginBottom:6 }}>What to include in a bug report</h3>
+            <p style={{ fontSize:13, color:"var(--muted)", lineHeight:1.8 }}>
+              ✦ Which page or tool has the issue<br/>
+              ✦ What you expected to happen<br/>
+              ✦ What actually happened<br/>
+              ✦ Your browser (Chrome, Safari, etc.)<br/>
+              ✦ Your device (phone, laptop, etc.)
+            </p>
+          </div>
+
+          <div style={{ ...S.card, borderColor:"rgba(232,201,122,0.15)", background:"rgba(232,201,122,0.05)" }}>
+            <div style={{ fontSize:24, marginBottom:10 }}>🙌</div>
+            <h3 style={{ fontFamily:"'Syne'", fontWeight:700, fontSize:16, color:"var(--yellow)", marginBottom:6 }}>Your feedback shapes WealthDelulu</h3>
+            <p style={{ fontSize:13, color:"var(--muted)", lineHeight:1.7 }}>
+              Every feature on this site started as a user suggestion or a problem someone reported. We're building this with you — not just for you.
+            </p>
+          </div>
+
+        </div>
       </div>
     </div>
   );
@@ -1034,7 +1211,8 @@ const S = {
     letterSpacing:"0.06em", textTransform:"uppercase", marginBottom:7 },
   inp: { width:"100%", background:"rgba(255,255,255,0.05)", border:"1px solid var(--border)",
     borderRadius:8, padding:"11px 14px", color:"var(--white)", fontSize:14,
-    fontFamily:"'Outfit',sans-serif", outline:"none", marginBottom:4 },
+    fontFamily:"'Outfit',sans-serif", outline:"none", marginBottom:4,
+    boxSizing:"border-box" },
   err: { color:"var(--pink)", fontSize:12, marginBottom:10 },
   btnP: { width:"100%", padding:"13px", background:"var(--yellow)", border:"none",
     borderRadius:10, color:"var(--black)", fontSize:14, fontWeight:700, cursor:"pointer",
@@ -1182,6 +1360,7 @@ export default function App() {
         {tab==="budget"   && <BudgetPage   />}
         {tab==="calcs"    && <CalcsPage    />}
         {tab==="networth" && <NetWorthPage />}
+        {tab==="contact"  && <ContactPage  />}
       </div>
       {authOpen && <AuthModal onLogin={e => setUser(e)} onClose={() => setAuthOpen(false)} />}
     </>
