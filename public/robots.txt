@@ -4,5 +4,8 @@ Allow: /
 # Sitemaps
 Sitemap: https://wealthdelulu.com/sitemap.xml
 
+# Block admin/private areas if any
+# User-agent: *
+# Disallow: /admin/
 # Crawl-delay (optional, only if needed)
 # Crawl-delay: 10
