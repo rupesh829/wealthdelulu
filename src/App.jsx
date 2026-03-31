@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SEOHead, SEO_CONFIG } from './SEOHead.jsx';
 
 // ─── Global Styles ────────────────────────────────────────────────────────────
 const GlobalStyle = () => (
@@ -1688,6 +1689,7 @@ function WaitlistModal({ onClose, onSuccess }) {
 
 function ArticleReader({ article, onClose }) {
   return (
+     <SEOHead {...getArticleSEO(article)} />
     <div
       style={{
         position: 'fixed',
@@ -1890,11 +1892,11 @@ function HomePage({ setActive }) {
   const [waitlistCount, setWaitlistCount] = useState(0);
 
   useEffect(() => {
-    fetchWaitlistCount().then((count) => setWaitlistCount(count));
+    fetchWaitlistCount().then(count => setWaitlistCount(count));
   }, []);
 
-  return (
-    <>
+  return (<>
+    <SEOHead {...SEO_CONFIG.home} />
       <div style={s.hero}>
         <div style={s.heroBg} />
         <div style={s.heroContent} className="fade-up">
@@ -2116,6 +2118,7 @@ function ArticlesPage() {
     return <ArticleReader article={reading} onClose={() => setReading(null)} />;
 
   return (
+    <SEOHead {...SEO_CONFIG.articles} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Articles</h1>
       <p style={s.pageSub}>
@@ -2195,6 +2198,7 @@ function BudgetPage() {
   const savePct = pct(saveInvest, income);
 
   return (
+    <SEOHead {...SEO_CONFIG.budget} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Budget Planner</h1>
       <p style={s.pageSub}>
@@ -2442,6 +2446,7 @@ function CalcsPage() {
   const totalGains = futureValue - totalContributed;
 
   return (
+    <SEOHead {...SEO_CONFIG.calculators} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Calculators</h1>
       <p style={s.pageSub}>
@@ -2666,6 +2671,7 @@ function WaitlistPage() {
   const progressPct = ((waitlistCount / WAITLIST_GOAL) * 100).toFixed(1);
 
   return (
+    <SEOHead {...SEO_CONFIG.waitlist} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Join the Waitlist</h1>
       <p style={s.pageSub}>
