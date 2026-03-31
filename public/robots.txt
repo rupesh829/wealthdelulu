@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://wealthdelulu.com/sitemap.xml
+
+# Crawl-delay (optional, only if needed)
+# Crawl-delay: 10
