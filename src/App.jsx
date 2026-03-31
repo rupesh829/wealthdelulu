@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { SEOHead, SEO_CONFIG } from './SEOHead.jsx';
+import { SEOHead, SEO_CONFIG, getArticleSEO } from './SEOHead.jsx';
 
 // ─── Global Styles ────────────────────────────────────────────────────────────
 const GlobalStyle = () => (
@@ -1688,7 +1688,7 @@ function WaitlistModal({ onClose, onSuccess }) {
 }
 
 function ArticleReader({ article, onClose }) {
-  return (
+  return ( <>
      <SEOHead {...getArticleSEO(article)} />
     <div
       style={{
@@ -1882,6 +1882,7 @@ function ArticleReader({ article, onClose }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -2117,7 +2118,7 @@ function ArticlesPage() {
   if (reading)
     return <ArticleReader article={reading} onClose={() => setReading(null)} />;
 
-  return (
+  return (<>
     <SEOHead {...SEO_CONFIG.articles} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Articles</h1>
@@ -2170,6 +2171,7 @@ function ArticlesPage() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 
@@ -2197,7 +2199,7 @@ function BudgetPage() {
   const wantsPct = pct(wants, income);
   const savePct = pct(saveInvest, income);
 
-  return (
+  return (<>
     <SEOHead {...SEO_CONFIG.budget} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Budget Planner</h1>
@@ -2427,6 +2429,7 @@ function BudgetPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -2445,7 +2448,7 @@ function CalcsPage() {
   const totalContributed = principal + monthly * months;
   const totalGains = futureValue - totalContributed;
 
-  return (
+  return (<>
     <SEOHead {...SEO_CONFIG.calculators} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Calculators</h1>
@@ -2636,6 +2639,7 @@ function CalcsPage() {
             growth. Your money does the work for you.
           </div>
         </div>
+      
       )}
 
       {calc !== 'compound' && (
@@ -2648,6 +2652,7 @@ function CalcsPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
 
@@ -2670,7 +2675,7 @@ function WaitlistPage() {
 
   const progressPct = ((waitlistCount / WAITLIST_GOAL) * 100).toFixed(1);
 
-  return (
+  return (<>
     <SEOHead {...SEO_CONFIG.waitlist} />
     <div style={s.page}>
       <h1 style={s.pageTitle}>Join the Waitlist</h1>
@@ -2855,6 +2860,7 @@ function WaitlistPage() {
         />
       )}
     </div>
+    </>
   );
 }
 
