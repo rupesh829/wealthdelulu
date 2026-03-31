@@ -59,8 +59,8 @@ export function SEOHead({
                 "url": "https://wealthdelulu.com/logo.png"
               }
             },
-            "datePublished": "2026-03-20",
-            "dateModified": "2026-03-31",
+            "datePublished": article.publishDate || "2026-03-20",
+            "dateModified": article.modifiedDate || article.publishDate || "2026-03-31",
             "mainEntityOfPage": {
               "@type": "WebPage",
               "@id": canonical
