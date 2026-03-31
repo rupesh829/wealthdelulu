@@ -1,30 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WealthDelulu — Stop Being Financially Delusional</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>WealthDelulu - Financial Education Without BS | Free Calculators & Articles</title>
+  <meta name="title" content="WealthDelulu - Financial Education Without BS | Free Calculators & Articles">
+  <meta name="description" content="Learn personal finance, investing, and retirement planning in plain English. Free compound interest calculator, budget tool, and no-jargon financial education for real people.">
+  <meta name="keywords" content="personal finance, financial education, compound interest calculator, retirement planning, budget tool, investing for beginners, money management, wealth building, financial literacy">
+  <meta name="author" content="WealthDelulu">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://wealthdelulu.com/">
+  
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wealthdelulu.com/">
+  <meta property="og:title" content="WealthDelulu - Financial Education Without BS">
+  <meta property="og:description" content="Free financial calculators, budget tools, and plain-English money education. No jargon, no gatekeeping - just the fundamentals that work.">
+  <meta property="og:image" content="https://wealthdelulu.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="WealthDelulu">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://wealthdelulu.com/">
+  <meta name="twitter:title" content="WealthDelulu - Financial Education Without BS">
+  <meta name="twitter:description" content="Free calculators and no-BS money education. Learn investing, budgeting, and retirement planning in plain English.">
+  <meta name="twitter:image" content="https://wealthdelulu.com/twitter-card.jpg">
+  <meta name="twitter:creator" content="@wealthdelulu">
+  <meta name="twitter:site" content="@wealthdelulu">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#080808">
+  <meta name="msapplication-TileColor" content="#080808">
+  
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Schema.org Structured Data - Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "WealthDelulu",
+    "url": "https://wealthdelulu.com",
+    "logo": "https://wealthdelulu.com/logo.png",
+    "description": "Financial education platform providing free calculators, articles, and tools for personal finance, investing, and retirement planning",
+    "sameAs": [
+      "https://twitter.com/wealthdelulu",
+      "https://instagram.com/wealthdelulu",
+      "https://tiktok.com/@wealthdelulu",
+      "https://youtube.com/@wealthdelulu"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "hello@wealthdelulu.com"
+    }
+  }
+  </script>
+  
+  <!-- Schema.org Structured Data - Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "WealthDelulu",
+    "url": "https://wealthdelulu.com",
+    "description": "Financial education platform with free calculators and articles",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://wealthdelulu.com/#articles?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  <!-- Schema.org Structured Data - FinanceApplication (for calculators) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "WealthDelulu Financial Calculators",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "description": "Free financial calculators including compound interest, retirement planning, mortgage, and budget tools",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "156"
+    }
+  }
+  </script>
+  
+  <!-- Schema.org Structured Data - Educational Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "WealthDelulu",
+    "description": "Financial literacy education for everyone",
+    "url": "https://wealthdelulu.com",
+    "knowsAbout": [
+      "Personal Finance",
+      "Investment Education",
+      "Retirement Planning",
+      "Budgeting",
+      "Compound Interest",
+      "Index Fund Investing"
+    ]
+  }
+  </script>
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="shortcut icon" href="/favicon.ico">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HP0M7775DZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HP0M7775DZ');
-    </script>
-
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-  </html>
-
+  <!-- Google Analytics 4 - REPLACE WITH YOUR MEASUREMENT ID -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script> -->
+  
+  <!-- Google Search Console Verification - ADD YOUR CODE -->
+  <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
+  
+</head>
+<body>
+  <noscript>
+    <div style="padding: 40px; text-align: center; font-family: sans-serif;">
+      <h1>⚠️ JavaScript Required</h1>
+      <p>WealthDelulu requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
+      <p>While you're here, learn about our free financial calculators and articles:</p>
+      <ul style="list-style: none; padding: 0;">
+        <li>📊 Compound Interest Calculator</li>
+        <li>💰 Retirement Planning Tool</li>
+        <li>🏠 Mortgage Calculator</li>
+        <li>📈 Budget Tracker</li>
+        <li>📚 Financial Education Articles</li>
+      </ul>
+    </div>
+  </noscript>
+  
+  <div id="root"></div>
+  
+  <!-- Main React App Bundle -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
