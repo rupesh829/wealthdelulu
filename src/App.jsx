@@ -4,7 +4,7 @@ import { SEOHead, SEO_CONFIG, getArticleSEO } from './SEOHead.jsx';
 // ─── Global Styles ────────────────────────────────────────────────────────────
 const GlobalStyle = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,20 +13,20 @@ const GlobalStyle = () => (
       --dark:    #111111;
       --card:    #161616;
       --card2:   #1c1c1c;
-      --pink:    #e8c97a;
+      --purple:  #534AB7;
+      --yellow:  #E8C97A;
+      --lime:    #97C459;
       --hot:     #d4a843;
-      --lime:    #a8c5a0;
-      --yellow:  #e8c97a;
       --cyan:    #8fb8c8;
       --white:   #f0ece4;
       --muted:   rgba(240,236,228,0.45);
       --border:  rgba(240,236,228,0.09);
-      --borderpink: rgba(232,201,122,0.25);
+      --borderyellow: rgba(232,201,122,0.25);
     }
 
     html, body { height: 100%; }
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Syne', sans-serif;
       background: var(--black);
       color: var(--white);
       min-height: 100vh;
@@ -78,7 +78,55 @@ const GlobalStyle = () => (
     select option { background: #1c1c1c; color: #f0ece4; }
     
     input, select, textarea {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Syne', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      .hero-mobile-stack {
+        grid-template-columns: 1fr !important;
+        min-height: auto !important;
+        padding: 40px 24px !important;
+      }
+      
+      .nav-mobile {
+        padding: 12px 20px !important;
+      }
+      
+      .nav-tabs-mobile {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .page-mobile {
+        padding: 24px 20px !important;
+      }
+      
+      .article-grid-mobile,
+      .tools-grid-mobile {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .summary-row-mobile {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .budget-grid-mobile {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title-mobile {
+        font-size: 42px !important;
+      }
+      
+      .page-title-mobile {
+        font-size: 48px !important;
+      }
+      
+      .section-title-mobile {
+        font-size: 36px !important;
+      }
     }
   `}</style>
 );
@@ -144,6 +192,7 @@ const ARTICLES = [
     subtitle: "The treat-yourself trap that's quietly wrecking your finances",
     color: '#e8c97a',
     readTime: '4 min',
+    publishDate: '2026-02-15',
     content: [
       {
         type: 'hook',
@@ -180,6 +229,7 @@ const ARTICLES = [
     subtitle: "Why a bigger salary won't fix what budgeting needs to fix",
     color: '#a8c5a0',
     readTime: '5 min',
+    publishDate: '2026-02-18',
     content: [
       {
         type: 'hook',
@@ -216,6 +266,7 @@ const ARTICLES = [
     subtitle: 'The belief keeping regular people from becoming the rich people',
     color: '#8fb8c8',
     readTime: '6 min',
+    publishDate: '2026-02-20',
     content: [
       {
         type: 'hook',
@@ -252,6 +303,7 @@ const ARTICLES = [
     subtitle: 'The exact step-by-step plan for beginners',
     color: '#8fb8c8',
     readTime: '7 min',
+    publishDate: '2026-02-22',
     content: [
       {
         type: 'hook',
@@ -303,6 +355,7 @@ const ARTICLES = [
     subtitle: 'Retirement accounts explained without the jargon',
     color: '#a8c5a0',
     readTime: '8 min',
+    publishDate: '2026-02-25',
     content: [
       {
         type: 'hook',
@@ -354,6 +407,7 @@ const ARTICLES = [
     subtitle: 'Why your 25-year-old self will thank you',
     color: '#e8c97a',
     readTime: '5 min',
+    publishDate: '2026-02-27',
     content: [
       {
         type: 'hook',
@@ -395,6 +449,7 @@ const ARTICLES = [
     subtitle: 'Understanding average returns vs real-life volatility',
     color: '#8fb8c8',
     readTime: '6 min',
+    publishDate: '2026-03-01',
     content: [
       {
         type: 'hook',
@@ -436,6 +491,7 @@ const ARTICLES = [
     subtitle: 'The 15% rule and why it actually works',
     color: '#a8c5a0',
     readTime: '7 min',
+    publishDate: '2026-03-04',
     content: [
       {
         type: 'hook',
@@ -487,6 +543,7 @@ const ARTICLES = [
     subtitle: 'The fastest way to estimate investment growth',
     color: '#e8c97a',
     readTime: '4 min',
+    publishDate: '2026-03-06',
     content: [
       {
         type: 'hook',
@@ -528,6 +585,7 @@ const ARTICLES = [
     subtitle: 'The financial safety net everyone needs',
     color: '#8fb8c8',
     readTime: '6 min',
+    publishDate: '2026-03-08',
     content: [
       {
         type: 'hook',
@@ -579,6 +637,7 @@ const ARTICLES = [
     subtitle: 'How interest makes you pay double for everything',
     color: '#e8c97a',
     readTime: '5 min',
+    publishDate: '2026-03-11',
     content: [
       {
         type: 'hook',
@@ -625,6 +684,7 @@ const ARTICLES = [
     subtitle: 'The simplest budget framework that actually works',
     color: '#a8c5a0',
     readTime: '5 min',
+    publishDate: '2026-03-13',
     content: [
       {
         type: 'hook',
@@ -676,6 +736,7 @@ const ARTICLES = [
     subtitle: "Spoiler — it's probably not enough to live on",
     color: '#8fb8c8',
     readTime: '6 min',
+    publishDate: '2026-03-15',
     content: [
       {
         type: 'hook',
@@ -727,6 +788,7 @@ const ARTICLES = [
     subtitle: 'Why buying everything beats picking winners',
     color: '#8fb8c8',
     readTime: '7 min',
+    publishDate: '2026-03-18',
     content: [
       {
         type: 'hook',
@@ -778,6 +840,7 @@ const ARTICLES = [
     subtitle: 'How to calculate your retirement freedom number',
     color: '#a8c5a0',
     readTime: '7 min',
+    publishDate: '2026-03-20',
     content: [
       {
         type: 'hook',
@@ -834,6 +897,7 @@ const ARTICLES = [
     subtitle: 'The life-changing math of consistent investing',
     color: '#e8c97a',
     readTime: '5 min',
+    publishDate: '2026-03-22',
     content: [
       {
         type: 'hook',
@@ -880,6 +944,7 @@ const ARTICLES = [
     subtitle: 'Two strategies to pay off debt faster',
     color: '#e8c97a',
     readTime: '6 min',
+    publishDate: '2026-03-25',
     content: [
       {
         type: 'hook',
@@ -1088,14 +1153,14 @@ function Nav({ active, setActive }) {
           </span>
         </div>
       </div>
-      <nav style={s.nav}>
+      <nav style={s.nav} className="nav-mobile">
         <div
           style={{ ...s.navLogo, cursor: 'pointer' }}
           onClick={() => setActive('home')}
         >
           <span style={{ fontSize: 36 }}>💰</span> WealthDelulu
         </div>
-        <div style={s.navTabs}>
+        <div style={s.navTabs} className="nav-tabs-mobile">
           {['home', 'articles', 'budget', 'calcs', 'waitlist'].map((t) => (
             <div
               key={t}
@@ -1687,6 +1752,145 @@ function WaitlistModal({ onClose, onSuccess }) {
   );
 }
 
+function NewsletterSignup() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Replace with your Newsletter Google Apps Script URL after setup
+    const GOOGLE_NEWSLETTER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCo2yHmJvIHUjqW8wEXdIaCwmJK_ntIAiJihpYF67Kkzw_aQLjt8LKx319cthTRXna/exec';
+    
+    try {
+      await fetch(GOOGLE_NEWSLETTER_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Required for Google Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          timestamp: new Date().toISOString(),
+          source: 'article'
+        })
+      });
+      
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      setSubmitted(true); // Show success anyway since we can't verify with no-cors
+    }
+  };
+  
+  if (submitted) {
+    return (
+      <div style={{
+        marginTop: 48,
+        padding: 32,
+        background: 'rgba(151,196,89,0.1)',
+        border: '1px solid rgba(151,196,89,0.3)',
+        borderRadius: 14,
+        textAlign: 'center'
+      }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
+        <h3 style={{
+          fontFamily: "'Syne',sans-serif",
+          fontSize: 20,
+          fontWeight: 700,
+          color: 'var(--lime)',
+          marginBottom: 8
+        }}>
+          You're on the list!
+        </h3>
+        <p style={{ fontSize: 14, color: 'var(--muted)' }}>
+          Check your email for a confirmation link.
+        </p>
+      </div>
+    );
+  }
+  
+  return (
+    <div style={{
+      marginTop: 48,
+      padding: 32,
+      background: 'var(--card)',
+      border: '1px solid var(--borderyellow)',
+      borderRadius: 14,
+      textAlign: 'center'
+    }}>
+      <div style={{ fontSize: 32, marginBottom: 12 }}>📬</div>
+      <h3 style={{
+        fontFamily: "'Syne',sans-serif",
+        fontSize: 22,
+        fontWeight: 700,
+        color: 'var(--yellow)',
+        marginBottom: 12
+      }}>
+        Get Weekly Money Tips
+      </h3>
+      <p style={{
+        fontSize: 15,
+        color: 'var(--muted)',
+        marginBottom: 24,
+        maxWidth: 440,
+        margin: '0 auto 24px'
+      }}>
+        No BS. Just practical finance advice in your inbox every Tuesday.
+        Unsubscribe anytime.
+      </p>
+      <form onSubmit={handleSubmit} style={{
+        display: 'flex',
+        gap: 8,
+        maxWidth: 400,
+        margin: '0 auto',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+      }}>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="your@email.com"
+          style={{
+            flex: '1 1 200px',
+            padding: '12px 16px',
+            background: 'var(--card2)',
+            border: '1px solid var(--border)',
+            borderRadius: 8,
+            color: 'var(--white)',
+            fontSize: 14,
+            fontFamily: "'Syne',sans-serif"
+          }}
+        />
+        <button type="submit" style={{
+          padding: '12px 28px',
+          background: 'var(--yellow)',
+          color: 'var(--black)',
+          border: 'none',
+          borderRadius: 8,
+          fontSize: 14,
+          fontWeight: 700,
+          cursor: 'pointer',
+          fontFamily: "'Syne',sans-serif",
+          transition: 'transform 0.2s'
+        }}
+        onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+        >
+          Subscribe
+        </button>
+      </form>
+      <p style={{
+        fontSize: 11,
+        color: 'var(--muted)',
+        marginTop: 12
+      }}>
+        We respect your inbox. No spam, ever.
+      </p>
+    </div>
+  );
+}
+
 function ArticleReader({ article, onClose }) {
   return ( <>
      <SEOHead {...getArticleSEO(article)} />
@@ -1811,6 +2015,8 @@ function ArticleReader({ article, onClose }) {
           return null;
         })}
 
+        <NewsletterSignup />
+
         <div
           style={{
             marginTop: 48,
@@ -1898,11 +2104,11 @@ function HomePage({ setActive }) {
 
   return (<>
     <SEOHead {...SEO_CONFIG.home} />
-      <div style={s.hero}>
+      <div style={s.hero} className="hero-mobile-stack">
         <div style={s.heroBg} />
         <div style={s.heroContent} className="fade-up">
           <span style={s.heroBadge}>Financial Education for Real People</span>
-          <h1 style={s.heroTitle}>
+          <h1 style={s.heroTitle} className="hero-title-mobile">
             The Math They
             <span style={s.heroTitlePink}> Never Taught You</span>
           </h1>
@@ -1921,7 +2127,7 @@ function HomePage({ setActive }) {
           </div>
         </div>
         <div style={s.heroRight} className="fade-up2">
-          <div style={{ ...s.heroCard, borderColor: 'var(--borderpink)' }}>
+          <div style={{ ...s.heroCard, borderColor: 'var(--borderyellow)' }}>
             <div
               style={{
                 fontSize: 11,
@@ -2120,8 +2326,8 @@ function ArticlesPage() {
 
   return (<>
     <SEOHead {...SEO_CONFIG.articles} />
-    <div style={s.page}>
-      <h1 style={s.pageTitle}>Articles</h1>
+    <div style={s.page} className="page-mobile">
+      <h1 style={s.pageTitle} className="page-title-mobile">Articles</h1>
       <p style={s.pageSub}>
         Financial education explained clearly — no jargon, no gatekeeping, just
         the fundamentals that work.
@@ -2150,7 +2356,7 @@ function ArticlesPage() {
         ))}
       </div>
 
-      <div style={s.articlesGrid}>
+      <div style={s.articlesGrid} className="article-grid-mobile">
         {filtered.map((a) => (
           <div
             key={a.id}
@@ -2201,8 +2407,8 @@ function BudgetPage() {
 
   return (<>
     <SEOHead {...SEO_CONFIG.budget} />
-    <div style={s.page}>
-      <h1 style={s.pageTitle}>Budget Planner</h1>
+    <div style={s.page} className="page-mobile">
+      <h1 style={s.pageTitle} className="page-title-mobile">Budget Planner</h1>
       <p style={s.pageSub}>
         Track your income and expenses with the 50/30/20 rule: 50% needs, 30%
         wants, 20% savings/investments.
@@ -2399,12 +2605,12 @@ function BudgetPage() {
         </div>
       </div>
 
-      <div style={s.summaryRow}>
+      <div style={s.summaryRow} className="summary-row-mobile">
         <div style={{ ...s.summaryCard, borderColor: 'var(--border)' }}>
           <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 6 }}>
             Total Expenses
           </div>
-          <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--white)' }}>
+          <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--white)', fontFamily: "'Space Mono', monospace" }}>
             {fmt(total)}
           </div>
         </div>
@@ -2422,6 +2628,7 @@ function BudgetPage() {
               fontSize: 24,
               fontWeight: 700,
               color: remaining >= 0 ? 'var(--lime)' : '#ff6b6b',
+              fontFamily: "'Space Mono', monospace",
             }}
           >
             {fmt(Math.abs(remaining))}
@@ -2430,6 +2637,192 @@ function BudgetPage() {
       </div>
     </div>
     </>
+  );
+}
+
+function RetirementCalculator() {
+  const [currentAge, setCurrentAge] = useState(30);
+  const [retirementAge, setRetirementAge] = useState(65);
+  const [currentSavings, setCurrentSavings] = useState(50000);
+  const [monthlyContribution, setMonthlyContribution] = useState(500);
+  const [expectedReturn, setExpectedReturn] = useState(7);
+
+  const yearsToRetirement = retirementAge - currentAge;
+  const monthlyRate = expectedReturn / 100 / 12;
+  const months = yearsToRetirement * 12;
+  
+  const futureValue =
+    currentSavings * Math.pow(1 + monthlyRate, months) +
+    (monthlyContribution * (Math.pow(1 + monthlyRate, months) - 1)) / monthlyRate;
+  
+  const totalContributed = currentSavings + (monthlyContribution * months);
+  const totalGrowth = futureValue - totalContributed;
+  const annualWithdrawal = futureValue * 0.04; // 4% rule
+  const monthlyIncome = annualWithdrawal / 12;
+
+  return (
+    <div style={s.card}>
+      <h3 style={s.calcH}>Retirement Calculator</h3>
+      
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: 20,
+        marginBottom: 24
+      }}>
+        <div>
+          <label style={{ fontSize: 12, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+            Current Age
+          </label>
+          <input
+            type="range"
+            min={18}
+            max={70}
+            value={currentAge}
+            onChange={(e) => setCurrentAge(+e.target.value)}
+          />
+          <div style={{ fontSize: 13, color: 'var(--white)', marginTop: 4 }}>
+            {currentAge} years old
+          </div>
+        </div>
+
+        <div>
+          <label style={{ fontSize: 12, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+            Retirement Age
+          </label>
+          <input
+            type="range"
+            min={currentAge + 5}
+            max={80}
+            value={retirementAge}
+            onChange={(e) => setRetirementAge(+e.target.value)}
+          />
+          <div style={{ fontSize: 13, color: 'var(--white)', marginTop: 4 }}>
+            {retirementAge} years old
+          </div>
+        </div>
+
+        <div>
+          <label style={{ fontSize: 12, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+            Current Retirement Savings
+          </label>
+          <input
+            type="number"
+            value={currentSavings}
+            onChange={(e) => setCurrentSavings(+e.target.value)}
+            style={{
+              width: '100%',
+              padding: 10,
+              background: 'var(--card2)',
+              border: '1px solid var(--border)',
+              borderRadius: 8,
+              color: 'var(--white)',
+              fontFamily: "'Syne',sans-serif",
+              fontSize: 14
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: 12, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+            Monthly Contribution
+          </label>
+          <input
+            type="number"
+            value={monthlyContribution}
+            onChange={(e) => setMonthlyContribution(+e.target.value)}
+            style={{
+              width: '100%',
+              padding: 10,
+              background: 'var(--card2)',
+              border: '1px solid var(--border)',
+              borderRadius: 8,
+              color: 'var(--white)',
+              fontFamily: "'Syne',sans-serif",
+              fontSize: 14
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: 12, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+            Expected Annual Return (%)
+          </label>
+          <input
+            type="range"
+            min={1}
+            max={12}
+            step={0.5}
+            value={expectedReturn}
+            onChange={(e) => setExpectedReturn(+e.target.value)}
+          />
+          <div style={{ fontSize: 13, color: 'var(--white)', marginTop: 4 }}>
+            {expectedReturn}%
+          </div>
+        </div>
+      </div>
+
+      <div style={s.summaryRow} className="summary-row-mobile">
+        <div style={{ ...s.summaryCard, borderColor: 'var(--cyan)' }}>
+          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 6 }}>
+            Years to Retirement
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--cyan)', fontFamily: "'Space Mono', monospace" }}>
+            {yearsToRetirement} years
+          </div>
+        </div>
+        
+        <div style={{ ...s.summaryCard, borderColor: 'var(--yellow)' }}>
+          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 6 }}>
+            Retirement Balance
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--yellow)', fontFamily: "'Space Mono', monospace" }}>
+            {fmt(futureValue)}
+          </div>
+        </div>
+
+        <div style={{ ...s.summaryCard, borderColor: 'var(--lime)' }}>
+          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 6 }}>
+            Monthly Income (4% Rule)
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--lime)', fontFamily: "'Space Mono', monospace" }}>
+            {fmt(monthlyIncome)}
+          </div>
+        </div>
+      </div>
+
+      <div style={s.insight}>
+        <strong>The 4% Rule:</strong> With {fmt(futureValue)} saved, you could withdraw {fmt(annualWithdrawal)} per year (
+        {fmt(monthlyIncome)}/month) and your money should last 30+ years. This assumes {expectedReturn}% average returns and adjusting for inflation annually.
+      </div>
+
+      <div style={{
+        marginTop: 16,
+        padding: 16,
+        background: 'rgba(168,197,160,0.08)',
+        border: '1px solid rgba(168,197,160,0.2)',
+        borderRadius: 8,
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.8)',
+        lineHeight: 1.6
+      }}>
+        <strong>💡 Tip:</strong> You'll contribute {fmt(totalContributed)} over {yearsToRetirement} years. Investment growth adds {fmt(totalGrowth)}. Starting early makes a massive difference — every year you delay costs you thousands in lost compound growth.
+      </div>
+
+      <div style={{
+        marginTop: 24,
+        padding: 16,
+        background: 'rgba(255,255,255,0.03)',
+        borderRadius: 8,
+        fontSize: 12,
+        color: 'var(--muted)',
+        lineHeight: 1.6,
+        fontStyle: 'italic',
+        borderLeft: '3px solid var(--cyan)'
+      }}>
+        <strong>Disclaimer:</strong> This calculator is for educational purposes only and does not constitute financial advice. Actual results may vary based on market conditions, fees, taxes, Social Security benefits, and individual circumstances. The 4% rule is a guideline, not a guarantee. Consult a qualified financial advisor for personalized retirement planning.
+      </div>
+    </div>
   );
 }
 
@@ -2450,8 +2843,8 @@ function CalcsPage() {
 
   return (<>
     <SEOHead {...SEO_CONFIG.calculators} />
-    <div style={s.page}>
-      <h1 style={s.pageTitle}>Calculators</h1>
+    <div style={s.page} className="page-mobile">
+      <h1 style={s.pageTitle} className="page-title-mobile">Calculators</h1>
       <p style={s.pageSub}>
         Run the numbers on compound interest, retirement, mortgages, and more.
       </p>
@@ -2598,7 +2991,7 @@ function CalcsPage() {
                 Total Contributed
               </div>
               <div
-                style={{ fontSize: 20, fontWeight: 700, color: 'var(--cyan)' }}
+                style={{ fontSize: 20, fontWeight: 700, color: 'var(--cyan)', fontFamily: "'Space Mono', monospace" }}
               >
                 {fmt(totalContributed)}
               </div>
@@ -2610,7 +3003,7 @@ function CalcsPage() {
                 Investment Gains
               </div>
               <div
-                style={{ fontSize: 20, fontWeight: 700, color: 'var(--lime)' }}
+                style={{ fontSize: 20, fontWeight: 700, color: 'var(--lime)', fontFamily: "'Space Mono', monospace" }}
               >
                 {fmt(totalGains)}
               </div>
@@ -2626,6 +3019,7 @@ function CalcsPage() {
                   fontSize: 20,
                   fontWeight: 700,
                   color: 'var(--yellow)',
+                  fontFamily: "'Space Mono', monospace",
                 }}
               >
                 {fmt(futureValue)}
@@ -2638,11 +3032,29 @@ function CalcsPage() {
             over {years} years. Compound interest adds {fmt(totalGains)} in
             growth. Your money does the work for you.
           </div>
+          
+          <div style={{
+            marginTop: 24,
+            padding: 16,
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: 8,
+            fontSize: 12,
+            color: 'var(--muted)',
+            lineHeight: 1.6,
+            fontStyle: 'italic',
+            borderLeft: '3px solid var(--cyan)'
+          }}>
+            <strong>Disclaimer:</strong> This calculator is for educational purposes only and does not constitute financial advice. Actual results may vary based on market conditions, fees, taxes, and individual circumstances. Past performance does not guarantee future results. Consult a qualified financial advisor for personalized guidance.
+          </div>
         </div>
       
       )}
 
-      {calc !== 'compound' && (
+      {calc !== 'compound' && calc === 'retirement' && (
+        <RetirementCalculator />
+      )}
+
+      {calc !== 'compound' && calc !== 'retirement' && (
         <div style={s.card}>
           <p
             style={{ fontSize: 14, color: 'var(--muted)', textAlign: 'center' }}
@@ -2677,8 +3089,8 @@ function WaitlistPage() {
 
   return (<>
     <SEOHead {...SEO_CONFIG.waitlist} />
-    <div style={s.page}>
-      <h1 style={s.pageTitle}>Join the Waitlist</h1>
+    <div style={s.page} className="page-mobile">
+      <h1 style={s.pageTitle} className="page-title-mobile">Join the Waitlist</h1>
       <p style={s.pageSub}>
         Be the first to get access to user accounts, budget tracking, and net
         worth monitoring.
